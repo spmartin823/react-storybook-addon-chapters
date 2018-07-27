@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import Node from '@storybook/addon-info/dist/components/Node';
 import { Pre } from '@storybook/addon-info/dist/components/markdown';
 import PropTable from './PropTable';
-import renderInfoContent from '../utils/info-content';
+// import renderInfoContent from '../utils/info-content';
 import theme from '../theme';
+import ReactMarkdown from 'react-markdown';
 
 const propTypes = {
   title: PropTypes.string,
@@ -160,15 +161,15 @@ export class SectionDecorator {
     );
   }
 
-  static info(infoContent, useTheme) {
-    return (
+  static info(markDownFile, useTheme) {
+    return markDownFile ? (
       <div style={useTheme ? sectionStyles.subsection : {}} className="section-subsection">
-        <div style={useTheme ? sectionStyles.info : {}} className="section-info">
-          {infoContent}
-        </div>
-      </div>
-    );
-  }
+        <div style={useTheme ? sectionStyles.info : {}} className="section-info-seamus-was-here">
+          {markDownFile}
+         </div>
+       </div>
+     ) : <div> the markdown file did not load</div>;
+   }
 }
 
 
@@ -249,7 +250,8 @@ export default class Section extends Component {
   }
 
   render() {
-    const { title, subtitle, children, info, showSource, showPropTables, useTheme } = this.props;
+
+    const { title, subtitle, children, markDownFile, showSource, showPropTables, useTheme } = this.props;
     const showButtonsRow = this.props.allowPropTablesToggling || this.props.allowSourceToggling;
 
     const header = (
@@ -305,7 +307,7 @@ export default class Section extends Component {
 
     const additional = (
       <div>
-        {info && SectionDecorator.info(renderInfoContent(info), useTheme)}
+        {markDownFile && SectionDecorator.info(markDownFile, useTheme)}
         {showButtonsRow && SectionDecorator.buttons(buttons, useTheme)}
         {this.state.isSourceShown && this.renderSourceCode(useTheme)}
         {this.state.isPropsTableShown && this.renderPropTables(useTheme)}

@@ -4,6 +4,7 @@ import Story, { StoryDecorator, storyStyles } from './components/Story';
 import { ChapterDecorator, chapterStyles } from './components/Chapter';
 import { SectionDecorator, sectionStyles } from './components/Section';
 import { propTableStyles } from './components/PropTable';
+import addonAPI from '@storybook/addons';
 
 export { StoryDecorator, ChapterDecorator, SectionDecorator };
 export { storyStyles, chapterStyles, sectionStyles, propTableStyles };
@@ -31,6 +32,18 @@ const defaultProps = {
 
 export default {
   addWithChapters(storyName, storyContentOrFn = {}) {
+      debugger;
+
+
+      addonAPI.addPanel('seamus', {
+          title: 'My Addon',
+          render: () => (
+              <div> HELLO WORLD </div>
+          ),
+      });
+
+
+
     return this.add(storyName, (context) => {
       const storyContent = typeof storyContentOrFn === 'function'
           ? storyContentOrFn()
@@ -47,7 +60,8 @@ export default {
       return (
         <Story
           context={context}
-          title={storyName}
+          title={storyContent.category}
+          titleIcon={storyContent.titleIcon}
           subtitle={storyContent.subtitle}
           info={storyContent.info}
           chapters={storyContent.chapters}

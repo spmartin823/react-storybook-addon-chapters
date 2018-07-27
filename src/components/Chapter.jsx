@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Section from './Section';
-import renderInfoContent from '../utils/info-content';
 import theme from '../theme';
+import ReactMarkdown from 'react-markdown';
+import cx from 'classnames'
+import {
+  backgroundColor,
+  display,
+  height,
+  width,
+  margin,
+} from 'design-system-components/styles'
 
 const propTypes = {
   context: PropTypes.object,
@@ -54,7 +62,11 @@ export class ChapterDecorator {
 
   static subtitle(subtitle, useTheme) {
     return (
-      <span style={useTheme ? chapterStyles.subTitle : {}} className="chapter-subtitle">{subtitle}</span>
+      <span style={useTheme ? chapterStyles.subTitle : {}} className="chapter-subtitle">
+        <ReactMarkdown>
+          {subtitle}
+        </ReactMarkdown>
+      </span>
     );
   }
 
@@ -80,16 +92,32 @@ export class ChapterDecorator {
   }
 }
 
+const ConcreteBlock = () => {
+  return (
+      <span
+          style={{height: "5px", width: "100px"}}
+          className={cx(
+              backgroundColor.concreteGrey,
+              display.block,
+              height.onePointFive,
+              margin.topFour,
+              margin.bottomTwo,
+          )}
+      />
+  )
+};
+
 export default class Chapter extends Component {
   render() {
     const { context, title, subtitle, info, sections, addonInfo, useTheme } = this.props;
 
     const header = (
       <div>
-        {title && ChapterDecorator.title(title, useTheme)}
+        <ConcreteBlock />
+        {title && ChapterDecorator.title(title)}
         {subtitle && ChapterDecorator.subtitle(subtitle, useTheme)}
         {(subtitle || info) && ChapterDecorator.ruler(useTheme)}
-        {info && ChapterDecorator.subtitle(renderInfoContent(info, useTheme))}
+        {info && ChapterDecorator.subtitle(info, useTheme)}
       </div>
     );
 
@@ -99,7 +127,7 @@ export default class Chapter extends Component {
         context,
         title: section.title,
         subtitle: section.subtitle,
-        info: section.info,
+        markDownFile: section.markDownFile,
         ...options,
         addonInfo,
       };

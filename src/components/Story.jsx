@@ -4,11 +4,14 @@ import { baseFonts } from '@storybook/components';
 import Chapter from './Chapter';
 import renderInfoContent from '../utils/info-content';
 import theme from '../theme';
+import TitleBox from './TitleBox';
+import cx from 'classnames'
 
 const propTypes = {
   context: PropTypes.object,
   title: PropTypes.string,
   subtitle: PropTypes.string,
+  titleIcon: PropTypes.object,
   info: PropTypes.string,
   chapters: PropTypes.arrayOf(PropTypes.object),
   addonInfo: PropTypes.object,
@@ -45,9 +48,13 @@ export const storyStyles = {
 };
 
 export class StoryDecorator {
-  static title(title, useTheme) {
+  static title(title, subtitle, titleIcon) {
     return (
-      <h1 style={useTheme ? storyStyles.title : {}} className="story-title">{title}</h1>
+      <TitleBox
+        title={title}
+        subtitle={subtitle}
+        titleIcon={titleIcon}
+      />
     );
   }
 
@@ -75,14 +82,18 @@ export class StoryDecorator {
 
 export default class Story extends Component {
   render() {
-    const { context, subtitle, title, info, chapters, addonInfo, sectionOptions } = this.props;
+    const { context, subtitle, title, info, chapters, addonInfo, sectionOptions, titleIcon } = this.props;
     const { useTheme } = sectionOptions;
 
     const header = (
       <div>
-        {title && StoryDecorator.title(title, useTheme)}
-        {subtitle && StoryDecorator.subtitle(subtitle, useTheme)}
-        {info && StoryDecorator.subtitle(renderInfoContent(info, useTheme))}
+        {title &&
+          <TitleBox
+            title={title}
+            subtitle={subtitle}
+            titleIcon={titleIcon}
+          />
+        }
       </div>
     );
 

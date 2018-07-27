@@ -1,5 +1,5 @@
 {
-  "name": "react-storybook-addon-chapters",
+  "name": "react-storybook-addon-chapters-seamus",
   "version": "2.1.5",
   "description": "React Storybook Chapters addon allows showcasing of multiple components within a story by breaking it down into smaller categories (chapters) and subcategories (sections) for more organizational goodness.",
   "repository": {
@@ -19,6 +19,7 @@
     "publish-storybook": "bash .scripts/publish_storybook.sh"
   },
   "devDependencies": {
+    "@storybook/addons": "^3.4.8",
     "babel-cli": "^6.5.0",
     "babel-core": "^6.5.0",
     "babel-eslint": "^7.0.0",
@@ -42,6 +43,7 @@
     "mocha": "^3.0.2",
     "prop-types": "^15.6.0",
     "react-dom": "^0.14.7 || ^16.2.0",
+    "react-markdown": "^3.4.1",
     "react-test-renderer": "^16.0.0-0",
     "sinon": "^1.17.6"
   },
