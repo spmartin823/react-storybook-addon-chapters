@@ -30,7 +30,9 @@ const defaultProps = {
 
 export default {
   addWithChapters(storyName, storyContentOrFn = {}) {
-
+    
+      
+      
     return this.add(storyName, (context) => {
       const storyContent = typeof storyContentOrFn === 'function'
           ? storyContentOrFn()

@@ -61,9 +61,11 @@ const ConcreteBlock = (title) => {
     if (typeof title !== 'string') {
         title = 'concrete-block'
     }
+    const id = title.toLowerCase().split(' ').join('-');
     return (
         <span
-            id={title.toLowerCase().split(' ').join('-')}
+            name={id}
+            id={id}
             style={{height: "5px", width: "100px"}}
             className={cx(
                 backgroundColor.concreteGrey,

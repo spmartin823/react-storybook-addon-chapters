@@ -30,39 +30,16 @@ const defaultProps = {
   sections: [],
 };
 
-export const chapterStyles = {
-  header: {
-    marginBottom: 60,
-  },
-  hr: {
-    border: 'none',
-    backgroundColor: theme.border,
-    height: 1,
-  },
-  title: {
-    color: theme.grayDarkest,
-    fontSize: 24,
-    marginBottom: 10,
-  },
-  subtitle: {
-    color: theme.grayDark,
-    fontSize: 16,
-    marginBottom: 20,
-    marginTop: 0,
-  },
-  info: theme.infoStyle,
-};
-
 export class ChapterDecorator {
-  static title(title, useTheme) {
+  static title(title) {
     return (
-      <h3 style={useTheme ? chapterStyles.title : {}} className="chapter-h3">{title}</h3>
+      <h3 className="chapter-h3">{title}</h3>
     );
   }
 
-  static subtitle(subtitle, useTheme) {
+  static subtitle(subtitle) {
     return (
-      <span style={useTheme ? chapterStyles.subTitle : {}} className="chapter-subtitle">
+      <span className="chapter-subtitle">
         <ReactMarkdown>
           {subtitle}
         </ReactMarkdown>
@@ -70,15 +47,15 @@ export class ChapterDecorator {
     );
   }
 
-  static info(info, useTheme) {
+  static info(info) {
     return (
-      <div style={useTheme ? chapterStyles.info : {}} className="chapter-info">{info}</div>
+      <div className="chapter-info">{info}</div>
     );
   }
 
-  static ruler(useTheme) {
+  static ruler() {
     return (
-      <hr style={useTheme ? chapterStyles.hr : {}} className="chatper-hr" />
+      <hr className="chatper-hr" />
     );
   }
 

@@ -6,6 +6,7 @@ import renderInfoContent from '../utils/info-content';
 import theme from '../theme';
 import TitleBox from './TitleBox';
 import cx from 'classnames'
+import $ from 'jquery';
 
 const propTypes = {
   context: PropTypes.object,
