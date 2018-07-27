@@ -6,6 +6,30 @@ import PropTable from './PropTable';
 // import renderInfoContent from '../utils/info-content';
 import theme from '../theme';
 import ReactMarkdown from 'react-markdown';
+import cx from 'classnames'
+import {
+    backgroundColor,
+    display,
+    height,
+    width,
+    margin,
+    padding,
+    borders,
+    borderRadius,
+    borderColor,
+    fontWeight
+
+} from 'design-system-components/styles'
+import  {
+    Pattern,
+    H1,
+    H2,
+    H3,
+    H4,
+    H5,
+    FontReset,
+    Copy
+} from 'design-system-components';
 
 const propTypes = {
   title: PropTypes.string,
@@ -33,138 +57,142 @@ const defaultProps = {
   allowPropTablesToggling: true,
 };
 
-export const sectionButtonStyles = {
-  backgroundColor: 'transparent',
-  border: `1px solid ${theme.gray}`,
-  borderRadius: 3,
-  color: theme.grayDark,
-  cursor: 'pointer',
-  float: 'right',
-  marginLeft: 5,
-  padding: '5px 10px',
-
+const ConcreteBlock = (title) => {
+    if (typeof title !== 'string') {
+        title = 'concrete-block'
+    }
+    return (
+        <span
+            id={title.toLowerCase().split(' ').join('-')}
+            style={{height: "5px", width: "100px"}}
+            className={cx(
+                backgroundColor.concreteGrey,
+                display.block,
+                height.onePointFive,
+                margin.horizontalFour,
+                margin.topFour,
+                margin.bottomTwo,
+            )}
+        />
+    )
 };
 
-export const sectionStyles = {
-  container: {
-    marginBottom: 100,
-  },
-  header: {
-    marginBottom: 60,
-  },
-  title: {
-    color: theme.grayDarkest,
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  subtitle: {
-    color: theme.grayDark,
-    fontSize: 14,
-    marginBottom: 20,
-    marginTop: 0,
-  },
-  buttonContainer: {
-    height: 15,
-  },
-  button: sectionButtonStyles,
-  'button-active': {
-    ...sectionButtonStyles,
-    backgroundColor: theme.grayLight,
-    borderColor: theme.grayLight,
-    color: theme.grayDark,
-  },
-  info: theme.infoStyle,
-  componentContainer: {
-    marginBottom: 60,
-  },
-  subsection: {
-    marginBottom: 60,
-  },
-  subsectionTitle: {
-    color: theme.grayDark,
-    fontSize: 12,
-    letterSpacing: 2,
-    textTransform: 'uppercase',
-  },
-};
 
 export class SectionDecorator {
-  static main(header, component, additional, useTheme) {
+  static main(header, component, documentation) {
     return (
-      <div style={useTheme ? sectionStyles.container : {}} className="section-container">
-        {header}
-        {component}
-        {additional}
+      <div className="section-container">
+          {header}
+          {component}
+          {documentation}
       </div>
     );
   }
 
-  static header(header, useTheme) {
+  static header(header, sectionTitle) {
+    const id = typeof sectionTitle === 'string' ? sectionTitle.toLowerCase().split(' ').join('-') : 'concrete-block'
+
     return (
-      <div style={useTheme ? sectionStyles.header : {}} className="section-header">
-        <div>{header}</div>
-      </div>
+        <div className="section-header"
+         id={id}
+        >
+            <ConcreteBlock/>
+            <H3>{header}</H3>
+        </div>
     );
   }
 
   static title(title, useTheme) {
     return (
-      <h3 style={useTheme ? sectionStyles.title : {}} className="section-title">{title}</h3>
+      <h3 className="section-title">{title}</h3>
     );
   }
 
-  static subtitle(subtitle, useTheme) {
+  static subtitle(subtitle) {
     return (
-      <p style={useTheme ? sectionStyles.subtitle : {}} className="section-subtitle">{subtitle}</p>
+      <p className={cx(padding.topOne)}>{subtitle}</p>
     );
   }
 
   static component(component, useTheme) {
     return (
-      <div style={useTheme ? sectionStyles.componentContainer : {}} className="section-component-container">
-        {component}
+      <div className={
+          cx(
+              borders.all,
+              borderColor.smokeGrey,
+              borderRadius.three,
+              margin.horizontalFour,
+              margin.topTwo,
+              padding.horizontalOne,
+              padding.verticalOne,
+          )
+      }
+      >
+          {component}
+
       </div>
     );
   }
 
-  static additional(additional) {
+  static documentation(documentation) {
     return (
       <div>
-        <div>{additional}</div>
+        <div>{documentation}</div>
       </div>
     );
   }
 
-  static sourceCode(sourceCode, useTheme) {
+  static sourceCode(sourceCode) {
     return (
-      <div style={useTheme ? sectionStyles.subsection : {}} className="section-subsection">
-        <h4 style={useTheme ? sectionStyles.subsection.title : {}} className="section-subsection-title">Source</h4>
-        <Pre>
+        <div className={cx(
+            padding.leftOne,
+             )}
+        >
+            <div
+                className={cx(
+                    borders.bottom,
+                    borderColor.smokeGrey,
+                    fontWeight.bold,
+                )}
+            >
+                <h4 style={{'margin-bottom': '5px'}}
+                    className="section-subsection-title">Story Source</h4>
+            </div>
+            <Pre>
           {sourceCode}
         </Pre>
-      </div>
+        </div>
     );
   }
 
-  static propTables(propTables, useTheme) {
+  static propTables(propTables) {
     return (
-      <div style={useTheme ? sectionStyles.subsection : {}} className="section-subsection">
-        <h4 style={useTheme ? sectionStyles.subsection.title : {}} className="section-subsection-title">PropTypes</h4>
+      <div id="this" className={cx(
+          padding.leftOne
+      )}>
+          <div
+              className={cx(
+                  borders.bottom,
+                  borderColor.smokeGrey,
+                  fontWeight.bold,
+              )}
+          >
+        <h4  style={{'margin-bottom': '5px', 'margin-top': '5px'}} className="section-subsection-title">Prop Types</h4>
+          </div>
         {propTables}
       </div>
     );
   }
 
-  static buttons(buttons, useTheme) {
-    return (
-      <div style={useTheme ? sectionStyles.buttonContainer : {}} className="section-button-container">{buttons}</div>
-    );
-  }
-
-  static info(markDownFile, useTheme) {
+  static info(markDownFile, title) {
     return markDownFile ? (
-      <div style={useTheme ? sectionStyles.subsection : {}} className="section-subsection">
-        <div style={useTheme ? sectionStyles.info : {}} className="section-info-seamus-was-here">
+      <div className={cx(
+  margin.horizontalFour,
+  margin.topTwo,
+  padding.verticalOne,
+  )}>
+          <H2>{`Guidelines for ${title}`}</H2>
+        <div >
           {markDownFile}
          </div>
        </div>
@@ -176,10 +204,6 @@ export class SectionDecorator {
 export default class Section extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isSourceShown: props.showSource,
-      isPropsTableShown: props.showPropTables,
-    };
   }
 
   renderSourceCode(useTheme) {
@@ -189,7 +213,7 @@ export default class Section extends Component {
       <Node key={idx} depth={0} node={root} {...addonInfo} {...this.props} />
     ));
 
-    return SectionDecorator.sourceCode(sourceCode, useTheme);
+    return SectionDecorator.sourceCode(sourceCode);
   }
 
   renderPropTables(useTheme) {
@@ -237,7 +261,12 @@ export default class Section extends Component {
       return (
         <div key={idx}>
           <h5>&lt;{component.displayName || component.name}&gt; Component</h5>
-          <PropTable component={component} useTheme={useTheme} />
+          <div className={cx(
+              margin.leftOne,
+          )}
+          >
+            <PropTable component={component} useTheme={useTheme} />
+          </div>
         </div>
       );
     });
@@ -246,79 +275,48 @@ export default class Section extends Component {
       return null;
     }
 
-    return SectionDecorator.propTables(propTables, useTheme);
+    return SectionDecorator.propTables(propTables);
   }
 
   render() {
-
-    const { title, subtitle, children, markDownFile, showSource, showPropTables, useTheme } = this.props;
-    const showButtonsRow = this.props.allowPropTablesToggling || this.props.allowSourceToggling;
+    const { sectionTitle, subtitle, children, markDownFile, useTheme, atomTitle } = this.props;
 
     const header = (
-      <div>
-        {title && SectionDecorator.title(title, useTheme)}
-        {subtitle && SectionDecorator.subtitle(subtitle, useTheme)}
+      <div
+        className={cx(margin.horizontalFour)}
+      >
+        {sectionTitle && SectionDecorator.title(sectionTitle, useTheme)}
+        {subtitle && SectionDecorator.subtitle(subtitle)}
       </div>
     );
 
-    const buttons = [
-      this.props.allowPropTablesToggling &&
-      <button
-        key="allowPropTablesToggling" onClick={() => {
-          this.setState({
-            isPropsTableShown: !this.state.isPropsTableShown,
-          });
-        }}
-        style={
-            useTheme
-            ? this.state.isPropsTableShown
-              ? sectionStyles['button-active']
-              : sectionStyles.button
-            : this.state.isPropsTableShown
-              ? sectionStyles['button-active']
-              : sectionStyles.button
-            }
-        className={this.state.isPropsTableShown ? 'button-active' : 'button'}
-      >
-        {this.state.isPropsTableShown ? 'Hide' : 'Show'} Props Table
-        </button>,
+    const documentation = (
+        <FontReset>
+            <div>
+                <div
+                    className={cx(
+                        borders.all,
+                        borderColor.smokeGrey,
+                        borderRadius.three,
+                        margin.horizontalFour,
+                        margin.topTwo,
 
-      this.props.allowSourceToggling &&
-      <button
-        key="allowSourceToggling" onClick={() => {
-          this.setState({
-            isSourceShown: !this.state.isSourceShown,
-          });
-        }}
-        style={
-          useTheme
-            ? this.state.isSourceShown
-              ? sectionStyles['button-active']
-              : sectionStyles.button
-            : this.state.isSourceShown
-              ? sectionStyles['button-active']
-              : sectionStyles.button
-            }
-        className={this.state.isSourceShown ? 'button-active' : 'button'}
-      >
-        {this.state.isSourceShown ? 'Hide' : 'Show'} Source
-        </button>,
-    ];
-
-    const additional = (
-      <div>
-        {markDownFile && SectionDecorator.info(markDownFile, useTheme)}
-        {showButtonsRow && SectionDecorator.buttons(buttons, useTheme)}
-        {this.state.isSourceShown && this.renderSourceCode(useTheme)}
-        {this.state.isPropsTableShown && this.renderPropTables(useTheme)}
-      </div>
+                        padding.horizontalOne,
+                        padding.verticalOne,
+                    )}
+                >
+                    {this.renderSourceCode(useTheme)}
+                    {this.renderPropTables(useTheme)}
+                </div>
+                {markDownFile && SectionDecorator.info(markDownFile, sectionTitle)}
+            </div>
+        </FontReset>
     );
 
     return SectionDecorator.main(
-      SectionDecorator.header(header),
+      SectionDecorator.header(header, sectionTitle),
       SectionDecorator.component(children),
-      SectionDecorator.additional(additional),
-      useTheme
+      SectionDecorator.documentation(documentation),
     );
   }
 }

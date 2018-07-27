@@ -82,50 +82,25 @@ export class ChapterDecorator {
     );
   }
 
-  static main(header, sections, useTheme) {
+  static main(sections) {
     return (
       <div>
-        <div style={useTheme ? chapterStyles.header : {}} className="chapter-header">{header}</div>
         {sections}
       </div>
     );
   }
 }
 
-const ConcreteBlock = () => {
-  return (
-      <span
-          style={{height: "5px", width: "100px"}}
-          className={cx(
-              backgroundColor.concreteGrey,
-              display.block,
-              height.onePointFive,
-              margin.topFour,
-              margin.bottomTwo,
-          )}
-      />
-  )
-};
-
 export default class Chapter extends Component {
   render() {
-    const { context, title, subtitle, info, sections, addonInfo, useTheme } = this.props;
-
-    const header = (
-      <div>
-        <ConcreteBlock />
-        {title && ChapterDecorator.title(title)}
-        {subtitle && ChapterDecorator.subtitle(subtitle, useTheme)}
-        {(subtitle || info) && ChapterDecorator.ruler(useTheme)}
-        {info && ChapterDecorator.subtitle(info, useTheme)}
-      </div>
-    );
+    const { context, title, subtitle, info, sections, addonInfo, useTheme} = this.props;
 
     const renderedSections = sections.map((section, index) => {
       const options = section.options || {};
       const sectionProps = {
         context,
-        title: section.title,
+        sectionTitle: section.title,
+        atomTitle: title,
         subtitle: section.subtitle,
         markDownFile: section.markDownFile,
         ...options,
@@ -138,7 +113,7 @@ export default class Chapter extends Component {
       );
     });
 
-    return ChapterDecorator.main(header, renderedSections, useTheme);
+    return ChapterDecorator.main(renderedSections, useTheme);
   }
 }
 

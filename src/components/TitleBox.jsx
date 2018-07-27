@@ -28,7 +28,8 @@ export default class TitleBox extends Component {
         const {title, subtitle, titleIcon} = this.props;
         return (
             <Pattern porcelain>
-                <div className={cx(display.block,margin.horizontalAuto)}>
+                <div
+                    className={cx(display.block,margin.horizontalAuto)}>
                     <div className={cx(padding.topFour, padding.bottomTwo)}>
                         {titleIcon}
                     </div>

@@ -82,6 +82,7 @@ export class StoryDecorator {
 
 export default class Story extends Component {
   render() {
+      // title here means the type of element it is.
     const { context, subtitle, title, info, chapters, addonInfo, sectionOptions, titleIcon } = this.props;
     const { useTheme } = sectionOptions;
 
