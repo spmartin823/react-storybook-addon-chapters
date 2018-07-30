@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import Node from '@storybook/addon-info/dist/components/Node';
 import { Pre } from '@storybook/addon-info/dist/components/markdown';
 import PropTable from './PropTable';
-// import renderInfoContent from '../utils/info-content';
-import theme from '../theme';
-import ReactMarkdown from 'react-markdown';
 import cx from 'classnames'
 import {
     backgroundColor,
@@ -43,14 +40,12 @@ const propTypes = {
     PropTypes.array,
   ]),
   addonInfo: PropTypes.object,
-  useTheme: PropTypes.bool,
 };
 
 const defaultProps = {
   context: {},
   title: '',
   subtitle: '',
-  info: '',
   showSource: true,
   allowSourceToggling: true,
   showPropTables: false,
@@ -64,7 +59,6 @@ const ConcreteBlock = (title) => {
     const id = title.toLowerCase().split(' ').join('-');
     return (
         <span
-            name={id}
             id={id}
             style={{height: "5px", width: "100px"}}
             className={cx(
@@ -104,7 +98,7 @@ export class SectionDecorator {
     );
   }
 
-  static title(title, useTheme) {
+  static title(title) {
     return (
       <h3 className="section-title">{title}</h3>
     );
@@ -116,10 +110,9 @@ export class SectionDecorator {
     );
   }
 
-  static component(component, useTheme) {
+  static component(component) {
     return (
-      <div className={
-          cx(
+      <div className={cx(
               borders.all,
               borderColor.smokeGrey,
               borderRadius.three,
@@ -127,11 +120,8 @@ export class SectionDecorator {
               margin.topTwo,
               padding.horizontalOne,
               padding.verticalOne,
-          )
-      }
-      >
+        )}>
           {component}
-
       </div>
     );
   }
@@ -146,24 +136,21 @@ export class SectionDecorator {
 
   static sourceCode(sourceCode) {
     return (
-        <div className={cx(
-            padding.leftOne,
-             )}
+      <div className={cx(padding.leftOne)}>
+        <div
+          className={cx(
+            borders.bottom,
+            borderColor.smokeGrey,
+            fontWeight.bold,
+          )}
         >
-            <div
-                className={cx(
-                    borders.bottom,
-                    borderColor.smokeGrey,
-                    fontWeight.bold,
-                )}
-            >
-                <h4 style={{'margin-bottom': '5px'}}
-                    className="section-subsection-title">Story Source</h4>
-            </div>
-            <Pre>
+          <h4 style={{'margin-bottom': '5px'}}
+              className="section-subsection-title">Story Source</h4>
+        </div>
+        <Pre>
           {sourceCode}
         </Pre>
-        </div>
+      </div>
     );
   }
 
@@ -189,12 +176,13 @@ export class SectionDecorator {
   static info(markDownFile, title) {
     return markDownFile ? (
       <div className={cx(
-  margin.horizontalFour,
-  margin.topTwo,
-  padding.verticalOne,
-  )}>
+            margin.horizontalFour,
+            margin.topTwo,
+            padding.verticalOne,
+            )}
+      >
           <H2>{`Guidelines for ${title}`}</H2>
-        <div >
+        <div>
           {markDownFile}
          </div>
        </div>
@@ -208,7 +196,7 @@ export default class Section extends Component {
     super(props);
   }
 
-  renderSourceCode(useTheme) {
+  renderSourceCode() {
     const addonInfo = this.props.addonInfo;
 
     const sourceCode = React.Children.map(this.props.children, (root, idx) => (
@@ -218,7 +206,7 @@ export default class Section extends Component {
     return SectionDecorator.sourceCode(sourceCode);
   }
 
-  renderPropTables(useTheme) {
+  renderPropTables() {
     const components = new Map();
 
     if (!this.props.children) {
@@ -267,7 +255,7 @@ export default class Section extends Component {
               margin.leftOne,
           )}
           >
-            <PropTable component={component} useTheme={useTheme} />
+            <PropTable component={component} />
           </div>
         </div>
       );
@@ -281,13 +269,13 @@ export default class Section extends Component {
   }
 
   render() {
-    const { sectionTitle, subtitle, children, markDownFile, useTheme, atomTitle } = this.props;
+    const { sectionTitle, subtitle, children, markDownFile } = this.props;
 
     const header = (
       <div
         className={cx(margin.horizontalFour)}
       >
-        {sectionTitle && SectionDecorator.title(sectionTitle, useTheme)}
+        {sectionTitle && SectionDecorator.title(sectionTitle)}
         {subtitle && SectionDecorator.subtitle(subtitle)}
       </div>
     );
@@ -302,13 +290,12 @@ export default class Section extends Component {
                         borderRadius.three,
                         margin.horizontalFour,
                         margin.topTwo,
-
                         padding.horizontalOne,
                         padding.verticalOne,
                     )}
                 >
-                    {this.renderSourceCode(useTheme)}
-                    {this.renderPropTables(useTheme)}
+                    {this.renderSourceCode()}
+                    {this.renderPropTables()}
                 </div>
                 {markDownFile && SectionDecorator.info(markDownFile, sectionTitle)}
             </div>

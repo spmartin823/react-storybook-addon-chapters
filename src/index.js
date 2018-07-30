@@ -19,32 +19,16 @@ const defaultProps = {
     maxPropArrayLength: 3,
     maxPropStringLength: 50,
   },
-  sectionOptions: {
-    showSource: true,
-    allowSourceToggling: true,
-    showPropTables: false,
-    allowPropTablesToggling: true,
-    useTheme: true,
-  },
 };
 
 export default {
-  addWithChapters(storyName, storyContentOrFn = {}) {
-    
-      
-      
+  addWithChapters(storyName, storyContent) {
     return this.add(storyName, (context) => {
-      const storyContent = typeof storyContentOrFn === 'function'
-          ? storyContentOrFn()
-          : storyContentOrFn;
-
-      (storyContent.chapters || []).forEach((chapter) => {
-        (chapter.sections || []).forEach((section) => {
+      (storyContent.sections|| []).forEach((section) => {
           Object.assign(section, {
             options: Object.assign({}, defaultProps.sectionOptions, section.options),
           });
         });
-      });
 
       return (
         <Story
@@ -52,8 +36,7 @@ export default {
           title={storyContent.category}
           titleIcon={storyContent.titleIcon}
           subtitle={storyContent.subtitle}
-          info={storyContent.info}
-          chapters={storyContent.chapters}
+          sections={storyContent.sections}
           {...defaultProps}
         />
       );

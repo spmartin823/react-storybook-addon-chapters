@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
     Pattern,
@@ -25,11 +25,12 @@ const propTypes = {
 
 export default class TitleBox extends Component {
     render() {
+      debugger;
         const {title, subtitle, titleIcon} = this.props;
         return (
             <Pattern porcelain>
                 <div
-                    className={cx(display.block,margin.horizontalAuto)}>
+                    className={cx(display.block, margin.horizontalAuto)}>
                     <div className={cx(padding.topFour, padding.bottomTwo)}>
                         {titleIcon}
                     </div>
